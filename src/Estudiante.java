@@ -25,20 +25,4 @@ public class Estudiante{
   public String getGenero(){
     return genero;
   }
-
-  public void setNombre(String nombre){
-    this.nombre = nombre;
-  }
-
-  public void setId(int id){
-    this.id = id;
-  }
-
-  public void setEdad(int edad){
-    this.edad = edad;
-  }
-
-  public void setGenero(String genero){
-    this.genero = genero;
-  }
 }

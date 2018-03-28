@@ -9,7 +9,6 @@ public class Principal{
     controlador.crearEstudiante("Camilo", 1152345678, 21, "Macho");
     List<Estudiante> estudiantes = controlador.obtenerEstudiantes();
     Estudiante primero = estudiantes.get(0);
-    //controlador.mostrarEstudiante(primero.getId());
-    controlador.mostrarEstudiante(0);
+    controlador.mostrarEstudiante(primero.getId());
   }
 }

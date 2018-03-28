@@ -7,15 +7,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class MySqlEstudiante implements DaoEstudiante{
-  private List<Estudiante> estudiantes;
   private String _usuario = "root";
-  private String _pwd = "root";
+  private String _pwd = "password";
   private static String _bd = "miBasecita";
   static String _url = "jdbc:mysql://localhost/" + _bd;
   private Connection conn = null;
 
   public MySqlEstudiante(){
-    estudiantes = new ArrayList<>();
     try {
     	Class.forName("com.mysql.jdbc.Connection");
     	conn = (Connection)DriverManager.getConnection(_url, _usuario, _pwd);
@@ -30,40 +28,49 @@ public class MySqlEstudiante implements DaoEstudiante{
   }
 
   public void crearEstudiante(String nombre, int id, int edad, String genero){
-    Estudiante estudiante = new Estudiante(nombre, id, edad, genero);
-    estudiantes.add(estudiante);
+    setQuery("INSERT INTO estudiantes (id, nombre, identificacion, edad, genero) VALUES (NULL, \"" + nombre + "\", " + id + ", " + edad + ", \"" + genero + "\");");
   }
 
   public Estudiante buscarEstudiante(int id){
-	ResultSet resultado = getQuery("select * from persona where identificacion = " + id);
-	String nombre;
+	ResultSet resultado = getQuery("select * from estudiantes where identificacion = " + id);
+	String nombre = "", identificacion = "0", edad = "0", genero = "";
 	try {
 		while(resultado.next()){
 			nombre = resultado.getString("nombre");
-			System.out.println("el nombre es: " + nombre);
+			identificacion = resultado.getString("identificacion");
+			edad = resultado.getString("edad");
+			genero = resultado.getString("genero");
 		}
-  }catch(SQLException e) {
-			e.printStackTrace();
-		}
-    return estudiantes.get(0);
-    //terminar de implementar para que busque que estudiante es con el id.
+	}catch(SQLException e) {
+		e.printStackTrace();
+	}
+	return new Estudiante(nombre, Integer.parseInt(identificacion), Integer.parseInt(edad), genero);
   }
 
   public void actualizarEstudiante(String nombre, int id, int edad, String genero){
-    estudiantes.get(0).setNombre(nombre);
-    estudiantes.get(0).setEdad(edad);
-    estudiantes.get(0).setGenero(genero);
+    setQuery("update estudiantes set nombre = \"" + nombre + "\", edad = " + edad + ", genero = \"" + genero + "\" where identificacion = " + id + ";");
     System.out.println("Se actualizo el estudiante con id " + id);
-    //terminar de implementar para actualizar estudiante con el id que es
   }
 
   public void eliminarEstudiante(int id){
-    estudiantes.remove(0);
-    System.out.println("Se elimino el estudiante con id " + id);
-    //terminar de implementar para eliminar estudiante con el id que es
+	setQuery("delete from estudiantes where identificacion = " + id + ";");
   }
 
   public List<Estudiante> obtenerEstudiantes(){
+	List<Estudiante> estudiantes = new ArrayList<>();
+	ResultSet resultado = getQuery("select * from estudiantes");
+	String nombre = "", identificacion = "0", edad = "0", genero = "";
+	try {
+		while(resultado.next()){
+			nombre = resultado.getString("nombre");
+			identificacion = resultado.getString("identificacion");
+			edad = resultado.getString("edad");
+			genero = resultado.getString("genero");
+			estudiantes.add(new Estudiante(nombre, Integer.parseInt(identificacion), Integer.parseInt(edad), genero));
+		}
+	}catch(SQLException e) {
+		e.printStackTrace();
+	}
     return estudiantes;
   }
 
@@ -83,7 +90,7 @@ public class MySqlEstudiante implements DaoEstudiante{
 	  Statement state = null;
 	  try {
 		  state = (Statement) conn.createStatement();
-		  state.executeQuery(query);
+		  state.executeUpdate(query);
 	  }catch(SQLException e) {
 		  e.printStackTrace();
 	  }
