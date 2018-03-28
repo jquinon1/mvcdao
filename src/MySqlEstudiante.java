@@ -8,9 +8,9 @@ import java.sql.Statement;
 
 public class MySqlEstudiante implements DaoEstudiante{
   private String _usuario = "root";
-  private String _pwd = "password";
+  private String _pwd = "obupro20";
   private static String _bd = "miBasecita";
-  static String _url = "jdbc:mysql://localhost/" + _bd;
+  static String _url = "jdbc:mysql://db:3306/"+_bd+"?zeroDateTimeBehavior=convertToNull&autoReconnect=true&useSSL=false";
   private Connection conn = null;
 
   public MySqlEstudiante(){
@@ -21,6 +21,7 @@ public class MySqlEstudiante implements DaoEstudiante{
     		System.out.println("conexion a base de datos " + _url + " ok");
     	}
     }catch(SQLException ex){
+      System.err.println(ex.getMessage());
     	System.out.println("Hubo un problema al intentar conectarse a la base de datos" + _url);
     }catch(ClassNotFoundException ex) {
     	System.out.println(ex);
