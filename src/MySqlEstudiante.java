@@ -8,8 +8,8 @@ import java.sql.Statement;
 
 public class MySqlEstudiante implements DaoEstudiante{
   private String _usuario = "root";
-  private String _pwd = "obupro20";
-  private static String _bd = "miBasecita";
+  private String _pwd = "password";
+  private static String _bd = "database";
   static String _url = "jdbc:mysql://db:3306/"+_bd+"?zeroDateTimeBehavior=convertToNull&autoReconnect=true&useSSL=false";
   private Connection conn = null;
 
